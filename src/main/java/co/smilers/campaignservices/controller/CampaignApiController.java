@@ -44,6 +44,20 @@ public class CampaignApiController implements CampaignApi {
     }
 
     @Override
+    public ResponseEntity<ModelApiResponse> addAnswerBooleanScore(@ApiParam(value = "Cuenta activa y asociada a la sede", required = true) @PathVariable("account") String account, @ApiParam(value = "Objecto de resultado que será agregado", required = true) @Valid @RequestBody List<AnswerBooleanScore> answerBooleanScore) {
+        log.info("--answerBooleanScoreSize " + answerBooleanScore.size());
+        log.info("--answerBooleanScore " + answerBooleanScore);
+
+        try {
+            String response = campaignService.addBooleanAnswer(account, answerBooleanScore);
+            return new ResponseEntity<ModelApiResponse>(HttpStatus.OK);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ResponseEntity<ModelApiResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public ResponseEntity<ModelApiResponse> addAnswerGeneralScore(@ApiParam(value = "Cuenta activa y asociada a la sede", required = true) @PathVariable("account") String account, @ApiParam(value = "Objecto de resultado que será agregado", required = true) @Valid @RequestBody List<AnswerGeneralScore> answerGeneralScore) {
         log.info("--addAnswerGeneralScore " + answerGeneralScore.size());
 

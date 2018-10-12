@@ -1,10 +1,7 @@
 package co.smilers.campaignservices.controller;
 
 import co.smilers.campaignservices.api.ParameterApi;
-import co.smilers.campaignservices.model.GeneralSettingParameter;
-import co.smilers.campaignservices.model.Headquarter;
-import co.smilers.campaignservices.model.ModelApiResponse;
-import co.smilers.campaignservices.model.Zone;
+import co.smilers.campaignservices.model.*;
 import co.smilers.campaignservices.service.ParameterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -61,6 +58,18 @@ public class ParameterApiController implements ParameterApi {
 
 
         return new ResponseEntity<Headquarter>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public ResponseEntity<List<City>> listCity() {
+        log.info("--listCity ");
+        List<City> list = new ArrayList<>();
+        try {
+            list = parameterService.listCity();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<List<City>>(list, HttpStatus.OK);
     }
 
     @Override

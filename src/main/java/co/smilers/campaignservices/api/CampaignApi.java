@@ -23,10 +23,26 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-09-13T11:28:48.392Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-10-11T21:28:42.257Z")
 
 @Api(value = "campaign", description = "the campaign API")
 public interface CampaignApi {
+
+    @ApiOperation(value = "Agregar calificaciones SI/NO", nickname = "addAnswerBooleanScore", notes = "Agregar nueva lista de calificaciones SI/NO", response = ModelApiResponse.class, authorizations = {
+        @Authorization(value = "petstore_auth", scopes = {
+            @AuthorizationScope(scope = "read:buttons", description = "read your experience"),
+            @AuthorizationScope(scope = "write:buttons", description = "modify experience in your account")
+            })
+    }, tags={ "campaign", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 201, message = "successful operation", response = ModelApiResponse.class),
+        @ApiResponse(code = 405, message = "Invalid input") })
+    @RequestMapping(value = "/campaign/answerBooleanScore/{account}",
+        produces = { "application/xml; charset=utf-8", "application/json; charset=utf-8" }, 
+        consumes = { "application/json; charset=utf-8", "application/xml; charset=utf-8" },
+        method = RequestMethod.POST)
+    ResponseEntity<ModelApiResponse> addAnswerBooleanScore(@ApiParam(value = "Cuenta activa y asociada a la sede", required = true) @PathVariable("account") String account, @ApiParam(value = "Objecto de resultado que será agregado", required = true) @Valid @RequestBody List<AnswerBooleanScore> answerBooleanScore);
+
 
     @ApiOperation(value = "Agregar calificaciones generales", nickname = "addAnswerGeneralScore", notes = "Agregar nueva lista de calificaciones generales", response = ModelApiResponse.class, authorizations = {
         @Authorization(value = "petstore_auth", scopes = {

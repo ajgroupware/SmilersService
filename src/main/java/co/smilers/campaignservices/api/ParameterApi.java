@@ -5,10 +5,7 @@
  */
 package co.smilers.campaignservices.api;
 
-import co.smilers.campaignservices.model.GeneralSettingParameter;
-import co.smilers.campaignservices.model.Headquarter;
-import co.smilers.campaignservices.model.ModelApiResponse;
-import co.smilers.campaignservices.model.Zone;
+import co.smilers.campaignservices.model.*;
 import org.springframework.core.io.Resource;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-09-07T03:54:41.290Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-10-11T21:28:42.257Z")
 
 @Api(value = "parameter", description = "the parameter API")
 public interface ParameterApi {
@@ -76,6 +73,22 @@ public interface ParameterApi {
         produces = { "application/json; charset=utf-8", "application/xml; charset=utf-8" }, 
         method = RequestMethod.GET)
     ResponseEntity<Headquarter> headquarterByAccount(@ApiParam(value = "Cuenta activa y asociada a la sede", required = true) @PathVariable("account") String account);
+
+
+    @ApiOperation(value = "Lista las ciudades", nickname = "listCity", notes = "Lista las ciudades", response = City.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "petstore_auth", scopes = {
+            @AuthorizationScope(scope = "read:buttons", description = "read your experience"),
+            @AuthorizationScope(scope = "write:buttons", description = "modify experience in your account")
+            })
+    }, tags={ "parameter", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = City.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Invalid status value"),
+        @ApiResponse(code = 401, message = "Unauthorized user") })
+    @RequestMapping(value = "/parameter/city",
+        produces = { "application/json; charset=utf-8", "application/xml; charset=utf-8" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<City>> listCity();
 
 
     @ApiOperation(value = "Lista los parámetros generales", nickname = "listGeneralSettingParameter", notes = "Lista los parámetros generales configurados en una cuenta", response = GeneralSettingParameter.class, responseContainer = "List", authorizations = {

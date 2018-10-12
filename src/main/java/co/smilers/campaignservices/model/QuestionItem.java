@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "Definición de las preguntas de una campaña")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-08-23T12:54:40.619Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-10-11T22:19:45.279Z")
 
 public class QuestionItem   {
   @JsonProperty("code")
@@ -43,6 +43,9 @@ public class QuestionItem   {
 
   @JsonProperty("sendSmsNotification")
   private Boolean sendSmsNotification = null;
+
+  @JsonProperty("questionType")
+  private String questionType = null;
 
   public QuestionItem code(Long code) {
     this.code = code;
@@ -225,6 +228,26 @@ public class QuestionItem   {
     this.sendSmsNotification = sendSmsNotification;
   }
 
+  public QuestionItem questionType(String questionType) {
+    this.questionType = questionType;
+    return this;
+  }
+
+  /**
+   * Tipo de pregunta
+   * @return questionType
+  **/
+  @ApiModelProperty(value = "Tipo de pregunta")
+
+
+  public String getQuestionType() {
+    return questionType;
+  }
+
+  public void setQuestionType(String questionType) {
+    this.questionType = questionType;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -243,12 +266,13 @@ public class QuestionItem   {
         Objects.equals(this.minScore, questionItem.minScore) &&
         Objects.equals(this.isPublished, questionItem.isPublished) &&
         Objects.equals(this.receiveComment, questionItem.receiveComment) &&
-        Objects.equals(this.sendSmsNotification, questionItem.sendSmsNotification);
+        Objects.equals(this.sendSmsNotification, questionItem.sendSmsNotification) &&
+        Objects.equals(this.questionType, questionItem.questionType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, title, description, designOrder, designColor, minScore, isPublished, receiveComment, sendSmsNotification);
+    return Objects.hash(code, title, description, designOrder, designColor, minScore, isPublished, receiveComment, sendSmsNotification, questionType);
   }
 
   @Override
@@ -265,6 +289,7 @@ public class QuestionItem   {
     sb.append("    isPublished: ").append(toIndentedString(isPublished)).append("\n");
     sb.append("    receiveComment: ").append(toIndentedString(receiveComment)).append("\n");
     sb.append("    sendSmsNotification: ").append(toIndentedString(sendSmsNotification)).append("\n");
+    sb.append("    questionType: ").append(toIndentedString(questionType)).append("\n");
     sb.append("}");
     return sb.toString();
   }

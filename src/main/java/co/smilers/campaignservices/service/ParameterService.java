@@ -168,6 +168,49 @@ public class ParameterService {
         return headquarters;
     }
 
+    public List<City> listCity() throws SQLException{
+        logger.info("--listCity " );
+        List<City> list = new ArrayList<>();
+        //select
+        String query = "SELECT id" +
+                ", name" +
+
+                " FROM main.city";
+
+        ResultSet rs = null;
+        try {
+            Statement st = postgresDBConnection.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()) {
+                City city = new City();
+                Long code        = rs.getLong(1);
+                String name      = rs.getString(2);
+
+                city.setCode(code);
+                city.setName(name);
+
+                list.add(city);
+            }
+
+        } catch (SQLException e) {
+            logger.error(ConstantsUtil.SQL_EXCEPTION_TAG + e.getMessage());
+            throw new SQLException(e.getCause());
+        } catch (Exception e) {
+            logger.error("--Exception: " + e.getMessage());
+            throw new SQLException(e.getCause());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return list;
+    }
+
     public List<GeneralSettingParameter> listGeneralSettingParameter(String schema) throws SQLException{
         logger.info("--listGeneralSettingParameter " + schema);
         List<GeneralSettingParameter> generalSettingParameters = new ArrayList<>();

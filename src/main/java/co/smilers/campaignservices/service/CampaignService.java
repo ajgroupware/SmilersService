@@ -295,6 +295,7 @@ public class CampaignService {
                 ", min_score" +
                 ", receive_comment" +
                 ", send_sms_notification" +
+                ", question_type" +
                 " FROM %s.question_item WHERE campaign_code = ?";
 
         ResultSet rs = null;
@@ -316,6 +317,7 @@ public class CampaignService {
                 Double minScore              = rs.getDouble(7);
                 Boolean receiveComment       = rs.getBoolean(8);
                 Boolean sendSmsNotification  = rs.getBoolean(9);
+                String questionType   = rs.getString(10);
 
                 questionItem.setCode(code);
                 questionItem.setTitle(title);
@@ -326,6 +328,7 @@ public class CampaignService {
                 questionItem.setMinScore(minScore);
                 questionItem.setReceiveComment(receiveComment);
                 questionItem.setSendSmsNotification(sendSmsNotification);
+                questionItem.setQuestionType(questionType);
 
                 questionItems.add(questionItem);
             }
@@ -370,6 +373,7 @@ public class CampaignService {
                 ", min_score" +
                 ", receive_comment" +
                 ", send_sms_notification" +
+                ", question_type" +
                 " FROM %s.question_item";
 
         ResultSet rs = null;
@@ -390,6 +394,7 @@ public class CampaignService {
                 Double minScore              = rs.getDouble(7);
                 Boolean receiveComment       = rs.getBoolean(8);
                 Boolean sendSmsNotification  = rs.getBoolean(9);
+                String questionType   = rs.getString(10);
 
                 questionItem.setCode(code);
                 questionItem.setTitle(title);
@@ -400,7 +405,7 @@ public class CampaignService {
                 questionItem.setMinScore(minScore);
                 questionItem.setReceiveComment(receiveComment);
                 questionItem.setSendSmsNotification(sendSmsNotification);
-
+                questionItem.setQuestionType(questionType);
                 questionItems.add(questionItem);
             }
 
@@ -522,6 +527,104 @@ public class CampaignService {
 
                 pstmt.executeUpdate();
                 logger.info("--Answer recorded");
+            }
+
+            postgresDBConnection.commit();
+
+        } catch (SQLException e) {
+            logger.error(ConstantsUtil.PRINT_2_P, ConstantsUtil.SQL_EXCEPTION_TAG, e.getMessage());
+            postgresDBConnection.rollback();
+            throw new SQLException(e.getCause());
+        } finally {
+            // close the statement when all the INSERT's are finished
+            pstmt.close();
+        }
+
+        return response;
+    }
+
+    public String addBooleanAnswer(String schema, List<AnswerBooleanScore> answerScores) throws SQLException {
+        logger.info(ConstantsUtil.PRINT_2_P, "--addBooleanAnswer ", schema);
+        String response = "OK";
+        String sql = "INSERT INTO %s.answer_boolean_score(" +
+                " campaign_code" +
+                ", headquarter_code" +
+                ", zone_code" +
+                ", city_code" +
+                ", city_name" +
+
+                ", yes_answer" +
+                ", no_answer" +
+
+                ", score" +
+                ", meter_device_id" +
+                ", question_item_code" +
+                ", comment " +
+                ", user_id" +
+                //", registration_date" +
+                ") " +
+                " VALUES (?" +
+                ", ?" +
+                ", ?" +
+                ", ?" +
+                ", ?" +
+                ", ?" +
+                ", ?" +
+                ", ?" +
+
+                ", ?" +
+                ", ?" +
+                ", ?" +
+                ", ?" +
+                //", ?" +
+                ");";
+        postgresDBConnection.setAutoCommit(false); //transaction block start
+        PreparedStatement pstmt = postgresDBConnection.prepareStatement(String.format(sql, schema));
+        try  {
+            // now loop
+            for (AnswerBooleanScore answerScore : answerScores) {
+                pstmt.setLong(1, answerScore.getCampaign().getCode());
+                pstmt.setLong(2, answerScore.getHeadquarter().getCode());
+                pstmt.setLong(3, answerScore.getZone().getCode());
+
+                if (answerScore.getCityCode() != null) {
+                    pstmt.setLong(4, answerScore.getCityCode());
+                } else {
+                    pstmt.setNull(4, Types.INTEGER);
+                }
+
+                if (answerScore.getCityName() != null) {
+                    pstmt.setString(5, answerScore.getCityName());
+                } else {
+                    pstmt.setNull(5, Types.VARCHAR);
+                }
+
+                pstmt.setInt(6, answerScore.getYesAnswer());
+                pstmt.setInt(7, answerScore.getNoAnswer());
+                pstmt.setDouble(8, answerScore.getScore());
+
+                if (answerScore.getMeterDevice() != null) {
+                    pstmt.setLong(9, answerScore.getMeterDevice().getId());
+                } else {
+                    pstmt.setNull(9, Types.INTEGER);
+                }
+
+                pstmt.setLong(10, answerScore.getQuestionItem().getCode());
+
+                if (answerScore.getComment() != null) {
+                    pstmt.setString(11, answerScore.getComment());
+                } else {
+                    pstmt.setNull(11, Types.VARCHAR);
+                }
+
+                if (answerScore.getUserId() != null) {
+                    pstmt.setString(12, answerScore.getUserId());
+                } else {
+                    pstmt.setNull(12, Types.VARCHAR);
+                }
+
+                pstmt.executeUpdate();
+                logger.info("--AnswerBooleanScore recorded");
             }
 
             postgresDBConnection.commit();
