@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-10-11T21:28:42.257Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-10-17T20:58:37.131Z")
 
 @Api(value = "campaign", description = "the campaign API")
 public interface CampaignApi {
@@ -154,6 +154,22 @@ public interface CampaignApi {
         produces = { "application/json; charset=utf-8", "application/xml; charset=utf-8" }, 
         method = RequestMethod.GET)
     ResponseEntity<List<CampaignFooter>> listCampaignFooter(@NotNull @ApiParam(value = "Usuario asociado a la cuenta de la campaña", required = true) @Valid @RequestParam(value = "account", required = true) String account, @ApiParam(value = "Título") @Valid @RequestParam(value = "title", required = false) String title, @ApiParam(value = "Descripción") @Valid @RequestParam(value = "description", required = false) String description, @ApiParam(value = "Encabezado publicado") @Valid @RequestParam(value = "isPublished", required = false) Boolean isPublished, @ApiParam(value = "Campaña") @Valid @RequestParam(value = "campaign", required = false) Integer campaign);
+
+
+    @ApiOperation(value = "Lista preguntas finales", nickname = "listFooterQuestion", notes = "Lista las preguntas finales", response = QuestionItem.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "petstore_auth", scopes = {
+            @AuthorizationScope(scope = "read:buttons", description = "read your experience"),
+            @AuthorizationScope(scope = "write:buttons", description = "modify experience in your account")
+            })
+    }, tags={ "campaign", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = QuestionItem.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Invalid status value"),
+        @ApiResponse(code = 401, message = "Unauthorized user") })
+    @RequestMapping(value = "/campaign/footerQuestion",
+        produces = { "application/json; charset=utf-8", "application/xml; charset=utf-8" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<QuestionItem>> listFooterQuestion(@NotNull @ApiParam(value = "Usuario asociado a la cuenta", required = true) @Valid @RequestParam(value = "user", required = true) String user, @ApiParam(value = "Campaña") @Valid @RequestParam(value = "campaign", required = false) Integer campaign, @ApiParam(value = "Título") @Valid @RequestParam(value = "title", required = false) String title, @ApiParam(value = "Descripción") @Valid @RequestParam(value = "description", required = false) String description, @ApiParam(value = "Pregunta publicada") @Valid @RequestParam(value = "isPublished", required = false) Boolean isPublished);
 
 
     @ApiOperation(value = "Lista encabezado general", nickname = "listGeneralHeader", notes = "Lista los encabezados generales", response = GeneralHeader.class, responseContainer = "List", authorizations = {

@@ -14,11 +14,14 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "Definición de las preguntas de una campaña")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-10-11T22:19:45.279Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-10-17T21:09:38.771Z")
 
 public class QuestionItem   {
   @JsonProperty("code")
   private Long code = null;
+
+  @JsonProperty("campaignCode")
+  private Long campaignCode = null;
 
   @JsonProperty("title")
   private String title = null;
@@ -65,6 +68,26 @@ public class QuestionItem   {
 
   public void setCode(Long code) {
     this.code = code;
+  }
+
+  public QuestionItem campaignCode(Long campaignCode) {
+    this.campaignCode = campaignCode;
+    return this;
+  }
+
+  /**
+   * Campaña
+   * @return campaignCode
+  **/
+  @ApiModelProperty(value = "Campaña")
+
+
+  public Long getCampaignCode() {
+    return campaignCode;
+  }
+
+  public void setCampaignCode(Long campaignCode) {
+    this.campaignCode = campaignCode;
   }
 
   public QuestionItem title(String title) {
@@ -259,6 +282,7 @@ public class QuestionItem   {
     }
     QuestionItem questionItem = (QuestionItem) o;
     return Objects.equals(this.code, questionItem.code) &&
+        Objects.equals(this.campaignCode, questionItem.campaignCode) &&
         Objects.equals(this.title, questionItem.title) &&
         Objects.equals(this.description, questionItem.description) &&
         Objects.equals(this.designOrder, questionItem.designOrder) &&
@@ -272,7 +296,7 @@ public class QuestionItem   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, title, description, designOrder, designColor, minScore, isPublished, receiveComment, sendSmsNotification, questionType);
+    return Objects.hash(code, campaignCode, title, description, designOrder, designColor, minScore, isPublished, receiveComment, sendSmsNotification, questionType);
   }
 
   @Override
@@ -281,6 +305,7 @@ public class QuestionItem   {
     sb.append("class QuestionItem {\n");
     
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
+    sb.append("    campaignCode: ").append(toIndentedString(campaignCode)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    designOrder: ").append(toIndentedString(designOrder)).append("\n");

@@ -155,6 +155,20 @@ public class CampaignApiController implements CampaignApi {
         return new ResponseEntity<List<CampaignFooter>>(list, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<List<QuestionItem>> listFooterQuestion(@NotNull @ApiParam(value = "Usuario asociado a la cuenta", required = true) @Valid @RequestParam(value = "user", required = true) String user, @ApiParam(value = "Campaña") @Valid @RequestParam(value = "campaign", required = false) Integer campaign, @ApiParam(value = "Título") @Valid @RequestParam(value = "title", required = false) String title, @ApiParam(value = "Descripción") @Valid @RequestParam(value = "description", required = false) String description, @ApiParam(value = "Pregunta publicada") @Valid @RequestParam(value = "isPublished", required = false) Boolean isPublished) {
+        log.info("--listFooterQuestion " + user);
+
+        List<QuestionItem> listQuestionItem = new ArrayList<>();
+        try {
+            listQuestionItem = campaignService.listFooterQuestion(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<List<QuestionItem>>(listQuestionItem, HttpStatus.OK);
+    }
+
 
     public ResponseEntity<List<GeneralHeader>> listGeneralHeader(@NotNull @ApiParam(value = "Usuario asociado a la cuenta de la campaña", required = true) @Valid @RequestParam(value = "user", required = true) String user, @ApiParam(value = "Título") @Valid @RequestParam(value = "title", required = false) String title, @ApiParam(value = "Descripción") @Valid @RequestParam(value = "description", required = false) String description, @ApiParam(value = "Encabezado publicado") @Valid @RequestParam(value = "isPublished", required = false) Boolean isPublished) {
         log.info("--listGeneralHeader " + user);
@@ -180,7 +194,7 @@ public class CampaignApiController implements CampaignApi {
 
     @Override
     public ResponseEntity<List<QuestionItem>> listQuestion(@NotNull @ApiParam(value = "Usuario asociado a la cuenta", required = true) @Valid @RequestParam(value = "user", required = true) String user, @ApiParam(value = "Título") @Valid @RequestParam(value = "title", required = false) String title, @ApiParam(value = "Descripción") @Valid @RequestParam(value = "description", required = false) String description, @ApiParam(value = "Pregunta publicada") @Valid @RequestParam(value = "isPublished", required = false) Boolean isPublished) {
-        log.info("--listCampaign " + user);
+        log.info("--listQuestion " + user);
 
         List<QuestionItem> listQuestionItem = new ArrayList<>();
         try {

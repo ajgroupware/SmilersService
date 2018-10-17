@@ -360,6 +360,85 @@ public class CampaignService {
         return questionItems;
     }
 
+    public List<QuestionItem> listFooterQuestion(String schema) throws SQLException {
+        logger.info(ConstantsUtil.PRINT_2_P, "--listFooterQuestion ", schema);
+        List<QuestionItem> questionItems  = new ArrayList<>();
+        //select
+        String queryStr = "SELECT code" +
+                ", title" +
+                ", description" +
+                ", design_order" +
+                ", design_color" +
+                ", is_published" +
+                ", min_score" +
+                ", receive_comment" +
+                ", send_sms_notification" +
+                ", question_type" +
+                ", campaign_code" +
+                " FROM %s.footer_question_item";
+
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        try {
+            //Statement st = postgresDBConnection.createStatement();
+            String query = String.format(queryStr, schema);
+            pstmt = postgresDBConnection.prepareStatement(query);
+            rs = pstmt.executeQuery();
+            while(rs.next()) {
+                QuestionItem questionItem = new QuestionItem();
+                Long code            = rs.getLong(1);
+                String title         = rs.getString(2);
+                String description   = rs.getString(3);
+                Integer designOrder  = rs.getInt(4);
+                String designColor   = rs.getString(5);
+                Boolean isPublished  = rs.getBoolean(6);
+                Double minScore              = rs.getDouble(7);
+                Boolean receiveComment       = rs.getBoolean(8);
+                Boolean sendSmsNotification  = rs.getBoolean(9);
+                String questionType   = rs.getString(10);
+                Long campaignCode            = rs.getLong(11);
+
+                questionItem.setCode(code);
+                questionItem.setCampaignCode(campaignCode);
+                questionItem.setTitle(title);
+                questionItem.setDescription(description);
+                questionItem.setDesignOrder(designOrder);
+                questionItem.setDesignColor(designColor);
+                questionItem.setIsPublished(isPublished);
+                questionItem.setMinScore(minScore);
+                questionItem.setReceiveComment(receiveComment);
+                questionItem.setSendSmsNotification(sendSmsNotification);
+                questionItem.setQuestionType(questionType);
+                questionItems.add(questionItem);
+            }
+
+        } catch (SQLException e) {
+            logger.error(ConstantsUtil.PRINT_2_P, ConstantsUtil.SQL_EXCEPTION_TAG, e.getMessage());
+            throw new SQLException(e.getCause());
+        } catch (Exception e) {
+            logger.error(ConstantsUtil.PRINT_2_P, ConstantsUtil.EXCEPTION_TAG, e.getMessage());
+            throw new SQLException(e.getCause());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return questionItems;
+    }
+
     public List<QuestionItem> listQuestionItem(String schema) throws SQLException {
         logger.info(ConstantsUtil.PRINT_2_P, "--listQuestionItem ", schema);
         List<QuestionItem> questionItems  = new ArrayList<>();
