@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-08-30T10:02:19.518Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-01T02:51:30.757Z")
 
 @Api(value = "reports", description = "the reports API")
 public interface ReportsApi {
@@ -55,6 +55,22 @@ public interface ReportsApi {
         produces = { "application/json; charset=utf-8", "application/xml; charset=utf-8" }, 
         method = RequestMethod.GET)
     ResponseEntity<List<Object>> reportDetailAnswers(@NotNull @ApiParam(value = "Usuario asociado a la cuenta de la campaña", required = true) @Valid @RequestParam(value = "account", required = true) String account, @ApiParam(value = "Fecha de inicio (milisegundos)") @Valid @RequestParam(value = "startDate", required = false) String startDate, @ApiParam(value = "Fecha de finalización (ilisegundos)") @Valid @RequestParam(value = "endDate", required = false) String endDate, @ApiParam(value = "Sede") @Valid @RequestParam(value = "headquarter", required = false) Integer headquarter, @ApiParam(value = "Zona") @Valid @RequestParam(value = "zone", required = false) Integer zone, @ApiParam(value = "Campaña") @Valid @RequestParam(value = "campaign", required = false) Integer campaign, @ApiParam(value = "Pregunta") @Valid @RequestParam(value = "question", required = false) Integer question);
+
+
+    @ApiOperation(value = "Lista detalle de respuestas SI/NO", nickname = "reportDetailBooleanAnswers", notes = "Lista detalle de respuestas SI/NO", response = Object.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "petstore_auth", scopes = {
+            @AuthorizationScope(scope = "read:buttons", description = "read your experience"),
+            @AuthorizationScope(scope = "write:buttons", description = "modify experience in your account")
+            })
+    }, tags={ "reports", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = Object.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Invalid status value"),
+        @ApiResponse(code = 401, message = "Unauthorized user") })
+    @RequestMapping(value = "/reports/reportDetailBooleanAnswers",
+        produces = { "application/json; charset=utf-8", "application/xml; charset=utf-8" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<Object>> reportDetailBooleanAnswers(@NotNull @ApiParam(value = "Usuario asociado a la cuenta de la campaña", required = true) @Valid @RequestParam(value = "account", required = true) String account, @ApiParam(value = "Fecha de inicio (milisegundos)") @Valid @RequestParam(value = "startDate", required = false) String startDate, @ApiParam(value = "Fecha de finalización (ilisegundos)") @Valid @RequestParam(value = "endDate", required = false) String endDate, @ApiParam(value = "Sede") @Valid @RequestParam(value = "headquarter", required = false) Integer headquarter, @ApiParam(value = "Zona") @Valid @RequestParam(value = "zone", required = false) Integer zone, @ApiParam(value = "Campaña") @Valid @RequestParam(value = "campaign", required = false) Integer campaign, @ApiParam(value = "Pregunta") @Valid @RequestParam(value = "question", required = false) Integer question);
 
 
     @ApiOperation(value = "Reporte por sedes", nickname = "reportHeadquarter", notes = "Reporte por sedes", response = Object.class, responseContainer = "List", authorizations = {
