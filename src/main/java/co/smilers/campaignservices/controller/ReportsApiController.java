@@ -72,6 +72,36 @@ public class ReportsApiController implements ReportsApi {
         return new ResponseEntity<List<Object>>(list, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<List<Object>> reportCampaignBoolean(@NotNull @ApiParam(value = "Usuario asociado a la cuenta de la campaña", required = true) @Valid @RequestParam(value = "account", required = true) String account, @ApiParam(value = "Fecha de inicio (milisegundos)") @Valid @RequestParam(value = "startDate", required = false) String startDate, @ApiParam(value = "Fecha de finalización (ilisegundos)") @Valid @RequestParam(value = "endDate", required = false) String endDate, @ApiParam(value = "Sede") @Valid @RequestParam(value = "headquarter", required = false) Integer headquarter, @ApiParam(value = "Zona") @Valid @RequestParam(value = "zone", required = false) Integer zone, @ApiParam(value = "Campaña") @Valid @RequestParam(value = "campaign", required = false) Integer campaign) {
+        log.info("--reportCampaignBoolean " + account);
+        List<Object> list = new ArrayList<>();
+        try {
+            String startDateStr = "";
+            String endDateStr = "";
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            if (startDate != null && startDate.length() > 0 && !"0".equals(startDate)) {
+                Date date = new Date(Long.valueOf(startDate));
+                startDateStr = dateFormat.format(date);
+            }
+
+            if (endDate != null && endDate.length() > 0 && !"0".equals(endDate)) {
+                Date date = new Date(Long.valueOf(endDate));
+                endDateStr = dateFormat.format(date);
+            }
+
+            log.error("--startDateStr: " + startDateStr);
+            log.error("--endDateStr: " + endDateStr);
+
+            list = reportsService.reportCampaignBoolean(account, startDateStr, endDateStr, headquarter, zone, campaign);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<List<Object>>(list, HttpStatus.OK);
+    }
+
     public ResponseEntity<List<Object>> reportDetailAnswers(@NotNull @ApiParam(value = "Usuario asociado a la cuenta de la campaña", required = true) @Valid @RequestParam(value = "account", required = true) String account, @ApiParam(value = "Fecha de inicio (milisegundos)") @Valid @RequestParam(value = "startDate", required = false) String startDate, @ApiParam(value = "Fecha de finalización (ilisegundos)") @Valid @RequestParam(value = "endDate", required = false) String endDate, @ApiParam(value = "Sede") @Valid @RequestParam(value = "headquarter", required = false) Integer headquarter, @ApiParam(value = "Zona") @Valid @RequestParam(value = "zone", required = false) Integer zone, @ApiParam(value = "Campaña") @Valid @RequestParam(value = "campaign", required = false) Integer campaign, @ApiParam(value = "Pregunta") @Valid @RequestParam(value = "question", required = false) Integer question) {
         log.info("--reportDetailAnswers " + account);
         List<Object> list = new ArrayList<>();

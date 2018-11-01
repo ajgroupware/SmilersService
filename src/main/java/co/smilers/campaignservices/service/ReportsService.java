@@ -119,6 +119,11 @@ public class ReportsService {
                 report.add(object);
             }
 
+            List<Object> reportBolean = reportDetailBooleanAnswers(schema, startDate,  endDate, headquarter, zone, campaign, question);
+            if (reportBolean != null && reportBolean.size() > 0) {
+                report.addAll(reportBolean);
+            }
+
         } catch (SQLException e) {
             logger.error(ConstantsUtil.SQL_EXCEPTION_TAG + e.getMessage());
             throw new SQLException(e.getCause());
@@ -287,6 +292,67 @@ public class ReportsService {
                 object.put("total_moderate", totalModerate);
                 object.put("total_bad", totalBad);
                 object.put("total_poor", totalPoor);
+                object.put("total", total);
+                object.put("csat", csat);
+                report.add(object);
+            }
+
+        } catch (SQLException e) {
+            logger.error(ConstantsUtil.SQL_EXCEPTION_TAG + e.getMessage());
+            throw new SQLException(e.getCause());
+        } catch (Exception e) {
+            logger.error("--Exception: " + e.getMessage());
+            throw new SQLException(e.getCause());
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return report;
+    }
+
+    public List<Object> reportCampaignBoolean(String schema, String startDate,  String endDate, Integer headquarter, Integer zone, Integer campaign) throws SQLException {
+        logger.info("--reportCampaignBoolean " + schema);
+        List<Object> report = new ArrayList<>();
+        //select
+        String query = "select * from main.report_campaign_boolean(" +
+                "'%s', " +
+                "'%s', " +
+                "'%s', " +
+                "%d, " +
+                "%d, " +
+                "%d, " +
+                "0 " +
+                ")";
+
+        ResultSet rs = null;
+        try {
+            Statement st = postgresDBConnection.createStatement();
+
+            rs = st.executeQuery(String.format(query, schema, startDate, endDate, headquarter, zone, campaign));
+            while(rs.next()) {
+                Map<String, Object> object = new HashMap<>();
+
+                Long campaign_code   = rs.getLong(1);
+                String campaign_name   = rs.getString(2);
+                Long question_item_code   = rs.getLong(3);
+                String question_item_name   = rs.getString(4);
+                Long totalYesAnswer   = rs.getLong(5);
+                Long totalNoAnswer        = rs.getLong(6);
+                Long total            = rs.getLong(7);
+                Double csat           = rs.getDouble(8);
+
+                object.put("campaign_code", campaign_code);
+                object.put("campaign_name", campaign_name);
+                object.put("question_item_code", question_item_code);
+                object.put("question_item_name", question_item_name);
+                object.put("total_yes_answer", totalYesAnswer);
+                object.put("total_no_answer", totalNoAnswer);
                 object.put("total", total);
                 object.put("csat", csat);
                 report.add(object);
