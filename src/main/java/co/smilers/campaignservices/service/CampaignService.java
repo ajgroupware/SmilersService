@@ -8,8 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Service
 public class CampaignService {
@@ -536,7 +543,7 @@ public class CampaignService {
                 ", question_item_code" +
                 ", comment " +
                 ", user_id" +
-                //", registration_date" +
+                ", registration_date" +
                 ") " +
                 " VALUES (?" +
                 ", ?" +
@@ -554,7 +561,7 @@ public class CampaignService {
                 ", ?" +
                 ", ?" +
                 ", ?" +
-                //", ?" +
+                ", ?" +
                 ");";
         postgresDBConnection.setAutoCommit(false); //transaction block start
         PreparedStatement pstmt = postgresDBConnection.prepareStatement(String.format(sql, schema));
@@ -604,6 +611,26 @@ public class CampaignService {
                     pstmt.setNull(15, Types.VARCHAR);
                 }
 
+                if (answerScore.getRegistrationDate() != null) {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        Date parsed = format.parse(answerScore.getRegistrationDate());
+                        pstmt.setTimestamp(16, new Timestamp(parsed.getTime()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        //Fecha actual sin Zona horaria
+                        ZonedDateTime now = ZonedDateTime.now();
+                        now = now.withZoneSameInstant(ZoneOffset.UTC);
+                        pstmt.setTimestamp(16, Timestamp.valueOf(now.toLocalDateTime()));
+                    }
+
+                } else {
+                    //Fecha actual sin Zona horaria
+                    ZonedDateTime now = ZonedDateTime.now();
+                    now = now.withZoneSameInstant(ZoneOffset.UTC);
+                    pstmt.setTimestamp(16, Timestamp.valueOf(now.toLocalDateTime()));
+                }
+
                 pstmt.executeUpdate();
                 logger.info("--Answer recorded");
             }
@@ -640,7 +667,7 @@ public class CampaignService {
                 ", question_item_code" +
                 ", comment " +
                 ", user_id" +
-                //", registration_date" +
+                ", registration_date" +
                 ") " +
                 " VALUES (?" +
                 ", ?" +
@@ -655,7 +682,7 @@ public class CampaignService {
                 ", ?" +
                 ", ?" +
                 ", ?" +
-                //", ?" +
+                ", ?" +
                 ");";
         postgresDBConnection.setAutoCommit(false); //transaction block start
         PreparedStatement pstmt = postgresDBConnection.prepareStatement(String.format(sql, schema));
@@ -700,6 +727,26 @@ public class CampaignService {
                     pstmt.setString(12, answerScore.getUserId());
                 } else {
                     pstmt.setNull(12, Types.VARCHAR);
+                }
+
+                if (answerScore.getRegistrationDate() != null) {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        Date parsed = format.parse(answerScore.getRegistrationDate());
+                        pstmt.setTimestamp(13, new Timestamp(parsed.getTime()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        //Fecha actual sin Zona horaria
+                        ZonedDateTime now = ZonedDateTime.now();
+                        now = now.withZoneSameInstant(ZoneOffset.UTC);
+                        pstmt.setTimestamp(13, Timestamp.valueOf(now.toLocalDateTime()));
+                    }
+
+                } else {
+                    //Fecha actual sin Zona horaria
+                    ZonedDateTime now = ZonedDateTime.now();
+                    now = now.withZoneSameInstant(ZoneOffset.UTC);
+                    pstmt.setTimestamp(13, Timestamp.valueOf(now.toLocalDateTime()));
                 }
 
                 pstmt.executeUpdate();
