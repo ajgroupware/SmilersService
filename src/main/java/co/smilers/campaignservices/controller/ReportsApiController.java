@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-08-29T12:03:08.353Z")
 
@@ -109,18 +110,19 @@ public class ReportsApiController implements ReportsApi {
             String startDateStr = "";
             String endDateStr = "";
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             if (startDate != null && startDate.length() > 0 && !"0".equals(startDate)) {
-                Date date = new Date(Long.valueOf(startDate));
+                Date date = new Date(Long.valueOf(startDate) - 5*60*60*1000);
                 startDateStr = dateFormat.format(date);
             }
 
             if (endDate != null && endDate.length() > 0 && !"0".equals(endDate)) {
-                Date date = new Date(Long.valueOf(endDate));
+                Date date = new Date(Long.valueOf(endDate) - 5*60*60*1000);
                 endDateStr = dateFormat.format(date);
             }
 
-            log.error("--startDateStr: " + startDateStr);
-            log.error("--endDateStr: " + endDateStr);
+            log.info("--startDateStr: " + startDateStr);
+            log.info("--endDateStr: " + endDateStr);
 
             list = reportsService.reportDetailAnswers(account, startDateStr, endDateStr, headquarter, zone, campaign, question);
 

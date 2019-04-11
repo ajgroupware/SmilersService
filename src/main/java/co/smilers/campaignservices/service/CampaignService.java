@@ -525,7 +525,8 @@ public class CampaignService {
     public String addAnswer(String schema, List<AnswerScore> answerScores) throws SQLException {
         logger.info(ConstantsUtil.PRINT_2_P, "--addAnswer ", schema);
         String response = "OK";
-        String sql = "INSERT INTO %s.answer_score(" +
+        //String sql = "INSERT INTO %s.answer_score(" +
+        String sql = "INSERT INTO %s.answer_csat_score(" +
                 " campaign_code" +
                 ", headquarter_code" +
                 ", zone_code" +

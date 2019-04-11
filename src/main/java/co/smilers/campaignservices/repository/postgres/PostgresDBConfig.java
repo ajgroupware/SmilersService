@@ -26,7 +26,8 @@ public class PostgresDBConfig {
             String driver = "org.postgresql.Driver";
             Class.forName(driver);
             // connection string
-            String url = "jdbc:postgresql://smiller.cyluev4emnfj.us-west-2.rds.amazonaws.com:5432/smiller";
+            //String url = "jdbc:postgresql://smiller.cyluev4emnfj.us-west-2.rds.amazonaws.com:5432/smiller";
+            String url = "jdbc:postgresql://smiller.cyluev4emnfj.us-west-2.rds.amazonaws.com:5432/smilers_stage";
 
             try {
                 conn = DriverManager.getConnection(url, "smiller", "aUsTJK2sFhftcz34");
