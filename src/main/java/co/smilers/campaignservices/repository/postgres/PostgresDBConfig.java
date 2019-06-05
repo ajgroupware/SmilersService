@@ -27,10 +27,12 @@ public class PostgresDBConfig {
             Class.forName(driver);
             // connection string
             //String url = "jdbc:postgresql://smiller.cyluev4emnfj.us-west-2.rds.amazonaws.com:5432/smiller";
-            String url = "jdbc:postgresql://smiller.cyluev4emnfj.us-west-2.rds.amazonaws.com:5432/smilers_stage";
+            //String url = "jdbc:postgresql://smiller.cyluev4emnfj.us-west-2.rds.amazonaws.com:5432/smilers_stage";
+            String url = "jdbc:postgresql://smiller.cyluev4emnfj.us-west-2.rds.amazonaws.com:5432/smilers";
 
             try {
-                conn = DriverManager.getConnection(url, "smiller", "aUsTJK2sFhftcz34");
+                //conn = DriverManager.getConnection(url, "smiller", "aUsTJK2sFhftcz34");
+                conn = DriverManager.getConnection(url, "smilers_prod", "Sm1l3r52o19");
                 logger.info("--Connected to database postgresql");
             } catch (SQLException e) {
                 logger.info(e.getMessage());
